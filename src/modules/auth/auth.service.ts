@@ -2,7 +2,7 @@ import { compare, hash } from "bcryptjs";
 import { AuthenticationError } from "../../errors/app-errors";
 import { IUserServiceContract } from "./types/auth.contracts";
 import { UserRepository } from "./auth.repository";
-import { decode, sign, verify } from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 import { ENV } from "../../config/env";
 import { randomUUID } from "crypto";
 
@@ -49,7 +49,7 @@ export const UserService: IUserServiceContract = {
     refreshToken: async (refreshToken) => {
         const verifiedToken = verify(refreshToken, ENV.JWT_REFRESH_SECRET) as { userId: number }
         const userId = verifiedToken.userId
-        const userToken = await UserRepository.getRefreshTokenByUserId(verifiedToken.userId)
+        const userToken = await UserRepository.getRefreshTokenByUserId(userId)
 
         if (!userToken || userToken.token !== refreshToken){
             throw new AuthenticationError("Invalid refresh token")
@@ -64,6 +64,11 @@ export const UserService: IUserServiceContract = {
     },
     logoutUser: async (refreshToken) => {
         const verifiedToken = verify(refreshToken, ENV.JWT_REFRESH_SECRET) as { userId: number }
-        return await UserRepository.deleteRefreshToken(verifiedToken.userId)
+        const userId = verifiedToken.userId
+        const userToken = await UserRepository.getRefreshTokenByUserId(userId)
+        if (!userToken || userToken.token !== refreshToken){
+            throw new AuthenticationError("Invalid refresh token")
+        }
+        return await UserRepository.deleteRefreshToken(userId)
     }
 }

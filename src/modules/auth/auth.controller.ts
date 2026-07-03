@@ -1,4 +1,4 @@
-import { BadRequestError } from "../../errors/app-errors";
+import { AuthenticationError, BadRequestError } from "../../errors/app-errors";
 import { IUserControllerContract } from "./types/auth.contracts";
 import { UserService } from "./auth.service";
 import { ENV } from "../../config/env";
@@ -55,7 +55,9 @@ export const UserController: IUserControllerContract = {
             })
             res.status(200).json({ accessToken: newAccessToken })
         } catch (error) {
-            next(error)
+            throw new AuthenticationError(
+                "Invalid refresh token"
+            );
         }
     },
     logout: async (req, res, next) => {
