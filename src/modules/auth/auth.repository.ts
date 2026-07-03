@@ -11,7 +11,32 @@ export const UserRepository: IUserRepositoryContract = {
             throw error
         }
     },
-    getUserByEmail: async(email) => {
+    createOrUpdateRefreshToken: async (userId, refreshToken) => {
+        try{
+            const existingToken = await client.refreshToken.findUnique({
+                where: {
+                    userId: userId
+                }})
+            if (!existingToken){
+                return await client.refreshToken.create({
+                    data: {
+                        token: refreshToken,
+                        userId: userId
+                }})
+            }
+            return await client.refreshToken.update({
+                where: {
+                    userId: userId
+                },
+                data: {
+                    token: refreshToken
+                }
+            })
+        }catch(error){  
+            throw error
+        }
+    },
+    getUserByEmail: async(email) => {   
         try{
             return await client.user.findUnique({
                 where: {
@@ -19,6 +44,7 @@ export const UserRepository: IUserRepositoryContract = {
                 }
             })
         }catch(error){
+            console.log(error)
             throw error
         }
     }

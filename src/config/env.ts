@@ -3,5 +3,6 @@ import "dotenv/config";
 
 export const ENV = cleanEnv(process.env, {
     DATABASE_URL: str(),
-    JWT_SECRET: str()
+    JWT_ACCESS_SECRET: str(),
+    JWT_REFRESH_SECRET: str(),
 })

@@ -1,6 +1,7 @@
 import { BadRequestError } from "../../errors/app-errors";
 import { IUserControllerContract } from "./types/auth.contracts";
 import { UserService } from "./auth.service";
+import { ENV } from "../../config/env";
 
 export const UserController: IUserControllerContract = {
     registration: async (req, res, next) => {
@@ -14,6 +15,18 @@ export const UserController: IUserControllerContract = {
                 maxAge: 30 * 24 * 60 * 60 * 1000
             })
             res.status(201).json({ accessToken })
+        } catch (error) {
+            next(error)
+        }
+    },
+    login: async (req, res, next) => {
+        try {
+            const userData = req.body;
+            if (!userData){
+                throw new BadRequestError("Request body is missing");
+            }
+            const { accessToken } = await UserService.loginUser(userData)
+            res.status(200).json({ accessToken })
         } catch (error) {
             next(error)
         }

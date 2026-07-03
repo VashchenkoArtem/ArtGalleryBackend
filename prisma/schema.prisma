@@ -1,45 +1,51 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "./generated"
+  provider     = "prisma-client"
+  output       = "../src/generated"
+  moduleFormat = "cjs"
 }
+
 datasource db {
   provider = "postgresql"
 }
 
 model Picture {
-  id       Int      @id @default(autoincrement())
-  image    String
+  id           Int        @id @default(autoincrement())
+  image        String
   collectionId Int
-  collection Collection @relation(fields: [collectionId], references: [id])
-  comments Comment[]
+  comments     Comment[]
+  collection   Collection @relation(fields: [collectionId], references: [id])
 }
 
 model Collection {
-  id       Int      @id @default(autoincrement())
+  id       Int       @id @default(autoincrement())
   title    String
   image    String
   pictures Picture[]
 }
 
 model Comment {
-  id        Int      @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   content   String
   pictureId Int
-  picture   Picture @relation(fields: [pictureId], references: [id])
   userId    Int
-  user      User @relation(fields: [userId], references: [id]) 
+  picture   Picture @relation(fields: [pictureId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
 }
 
 model User {
+  id       Int       @id @default(autoincrement())
+  name     String
+  email    String    @unique
+  password String
+  avatar   String?
+  comments Comment[]
+  token    RefreshToken?
+}
+
+model RefreshToken {
   id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  avatar    String?
-  comments  Comment[]
+  token     String   @unique
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
 }

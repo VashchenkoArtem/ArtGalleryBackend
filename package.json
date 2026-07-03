@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsx watch src/app/server.ts",
     "build": "tsc",
-    "start": "node dist/app/server.js",
+    "start": "tsx src/app/server.ts",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:deploy": "prisma migrate deploy",
@@ -17,15 +17,18 @@
     "@prisma/client": "^7.8.0",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
+    "dotenv": "^17.4.2",
     "envalid": "^8.2.0",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
+    "prisma": "^7.8.0",
     "yup": "^1.7.1"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.8",
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^26.1.0",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2"
   }

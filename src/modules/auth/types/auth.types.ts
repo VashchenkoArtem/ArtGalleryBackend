@@ -6,3 +6,4 @@ export interface AuthResponse {
     refreshToken: string
 }
 export type CreateUserSchema = InferType<typeof UserSchema.registration>
+export type LoginUserSchema = InferType<typeof UserSchema.login>
