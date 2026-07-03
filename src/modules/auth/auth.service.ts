@@ -2,7 +2,7 @@ import { compare, hash } from "bcryptjs";
 import { AuthenticationError } from "../../errors/app-errors";
 import { IUserServiceContract } from "./types/auth.contracts";
 import { UserRepository } from "./auth.repository";
-import { decode, sign } from "jsonwebtoken";
+import { decode, sign, verify } from "jsonwebtoken";
 import { ENV } from "../../config/env";
 import { randomUUID } from "crypto";
 
@@ -39,10 +39,31 @@ export const UserService: IUserServiceContract = {
 
         const accessToken = sign({ userId: user.id}, ENV.JWT_ACCESS_SECRET, { expiresIn: "15m"})
         const refreshToken = sign({ userId: user.id, tokenId: randomUUID()}, ENV.JWT_REFRESH_SECRET, { expiresIn: "7d"})
-        const updatedRefreshToken = await UserRepository.createOrUpdateRefreshToken(user.id, refreshToken)
+
+        await UserRepository.createOrUpdateRefreshToken(user.id, refreshToken)
         return { 
             accessToken, 
-            refreshToken: updatedRefreshToken.token
+            refreshToken: refreshToken
         }
+    },
+    refreshToken: async (refreshToken) => {
+        const verifiedToken = verify(refreshToken, ENV.JWT_REFRESH_SECRET) as { userId: number }
+        const userId = verifiedToken.userId
+        const userToken = await UserRepository.getRefreshTokenByUserId(verifiedToken.userId)
+
+        if (!userToken || userToken.token !== refreshToken){
+            throw new AuthenticationError("Invalid refresh token")
+        }
+
+        const newAccessToken = sign({ userId: userId}, ENV.JWT_ACCESS_SECRET, { expiresIn: "15m"})
+        const newRefreshToken = sign({ userId: userId, tokenId: randomUUID()}, ENV.JWT_REFRESH_SECRET, { expiresIn: "7d"})
+
+        await UserRepository.createOrUpdateRefreshToken(userId, newRefreshToken)
+
+        return { newAccessToken: newAccessToken, newRefreshToken: newRefreshToken }
+    },
+    logoutUser: async (refreshToken) => {
+        const verifiedToken = verify(refreshToken, ENV.JWT_REFRESH_SECRET) as { userId: number }
+        return await UserRepository.deleteRefreshToken(verifiedToken.userId)
     }
 }

@@ -12,7 +12,10 @@ export const UserController: IUserControllerContract = {
             }
             const { accessToken, refreshToken } = await UserService.createUser(userData)
             res.cookie("refreshToken", refreshToken, {
-                maxAge: 30 * 24 * 60 * 60 * 1000
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                httpOnly: true,
+                secure: true,
+                sameSite: "strict"
             })
             res.status(201).json({ accessToken })
         } catch (error) {
@@ -25,8 +28,49 @@ export const UserController: IUserControllerContract = {
             if (!userData){
                 throw new BadRequestError("Request body is missing");
             }
-            const { accessToken } = await UserService.loginUser(userData)
+            const { accessToken, refreshToken } = await UserService.loginUser(userData)
+            res.cookie("refreshToken", refreshToken, {
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                httpOnly: true,
+                secure: true,
+                sameSite: "strict"
+            })
             res.status(200).json({ accessToken })
+        } catch (error) {
+            next(error)
+        }
+    },
+    refreshToken: async (req, res, next) => {
+        try {
+            const refreshToken = req.cookies.refreshToken;
+            if (!refreshToken){
+                throw new BadRequestError("Refresh token is missing");
+            }
+            const { newRefreshToken, newAccessToken } = await UserService.refreshToken(refreshToken)
+            res.cookie("refreshToken", newRefreshToken, {
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                httpOnly: true,
+                secure: true,
+                sameSite: "strict"
+            })
+            res.status(200).json({ accessToken: newAccessToken })
+        } catch (error) {
+            next(error)
+        }
+    },
+    logout: async (req, res, next) => {
+        try {
+            const refreshToken = req.cookies.refreshToken;
+            if (!refreshToken){
+                throw new BadRequestError("Refresh token is missing");
+            }
+            await UserService.logoutUser(refreshToken)
+            res.clearCookie("refreshToken", {
+                httpOnly: true,
+                secure: true,
+                sameSite: "strict"
+            })
+            res.status(200).json("Logout successful")
         } catch (error) {
             next(error)
         }

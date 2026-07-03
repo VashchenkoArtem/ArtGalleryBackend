@@ -1,5 +1,6 @@
 import { InferType } from "yup"
 import { UserSchema } from "../auth.schema"
+import { Prisma } from "../../../generated/client";
 
 export interface AuthResponse {
     accessToken: string;

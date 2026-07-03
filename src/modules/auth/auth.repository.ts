@@ -47,5 +47,27 @@ export const UserRepository: IUserRepositoryContract = {
             console.log(error)
             throw error
         }
+    },
+    getRefreshTokenByUserId: async(userId) => {
+        try{
+            return await client.refreshToken.findUnique({
+                where: {
+                    userId: userId
+                }
+            })
+        } catch (error) {
+            throw error
+        }
+    },
+    deleteRefreshToken: async(userId) => {
+        try{
+            await client.refreshToken.delete({
+                where: {
+                    userId: userId
+                }
+            })
+        } catch (error) {
+            throw error
+        }
     }
 }
