@@ -1,4 +1,4 @@
-import { BadRequestError, PermissionError } from "../../errors/app-errors";
+import { BadRequestError } from "../../errors/app-errors";
 import { UserService } from "../auth/auth.service";
 import { PicturesService } from "./pictures.service";
 import { IPicturesControllerContact } from "./types/pictures.contracts";
@@ -20,12 +20,18 @@ export const PicturesController: IPicturesControllerContact = {
     createPicture: async (req, res, next) => {
         try {
             const pictureData = req.body
-            if (!pictureData){
+            const pictureImage = req.file as Express.Multer.File
+            
+            if (!pictureData || !pictureImage){
                 throw new BadRequestError("Picture data is missing")
             }
             const userId = res.locals.userId
             const isUserAdmin = await UserService.isUserAdmin(userId)
-            const createdPicture = await PicturesService.createPicture(pictureData, isUserAdmin)
+            const pictureDataWithImage = {
+                ...pictureData,
+                image: pictureImage.filename
+            }
+            const createdPicture = await PicturesService.createPicture(pictureDataWithImage, isUserAdmin)
             res.status(201).json(createdPicture)
         } catch (error) {
             next(error)

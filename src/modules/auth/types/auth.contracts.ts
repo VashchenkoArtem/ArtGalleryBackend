@@ -30,8 +30,7 @@ export interface IUserControllerContract {
             object, 
             object
         >,
-        res: Response<{ accessToken: string }>,
-        next: NextFunction
+        res: Response<{ accessToken: string }>
     ) => void;
     logout: (
         req: Request<
@@ -40,8 +39,7 @@ export interface IUserControllerContract {
             object,
             object
         >,
-        res: Response<string>,
-        next: NextFunction
+        res: Response<string>
     ) => void
 }
 

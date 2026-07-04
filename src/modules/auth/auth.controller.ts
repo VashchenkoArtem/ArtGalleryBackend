@@ -1,7 +1,6 @@
 import { AuthenticationError, BadRequestError } from "../../errors/app-errors";
 import { IUserControllerContract } from "./types/auth.contracts";
 import { UserService } from "./auth.service";
-import { ENV } from "../../config/env";
 
 export const UserController: IUserControllerContract = {
     registration: async (req, res, next) => {
@@ -40,7 +39,7 @@ export const UserController: IUserControllerContract = {
             next(error)
         }
     },
-    refreshToken: async (req, res, next) => {
+    refreshToken: async (req, res) => {
         try {
             const refreshToken = req.cookies.refreshToken;
             if (!refreshToken){
@@ -60,7 +59,7 @@ export const UserController: IUserControllerContract = {
             );
         }
     },
-    logout: async (req, res, next) => {
+    logout: async (req, res) => {
         try {
             const refreshToken = req.cookies.refreshToken;
             if (!refreshToken){

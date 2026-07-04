@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express" 
 import { Picture } from "../../../generated/client"
-import { CreatePictureSchema, PaginationData, PictureRepositoryPayload, PicturesQuery } from "./pictures.types"
+import { CreatePicture, CreatePictureSchema, PaginationData, PictureRepositoryPayload, PicturesQuery } from "./pictures.types"
 
 export interface IPicturesControllerContact {
     getPictures: (
@@ -27,10 +27,10 @@ export interface IPicturesControllerContact {
 
 export interface IPicturesServiceContract {
     getPictures: (paginationData: PaginationData) => Promise<Picture[]>
-    createPicture: (pictureData: CreatePictureSchema, isUserAdmin: boolean) => Promise<Picture>
+    createPicture: (pictureData: CreatePicture, isUserAdmin: boolean) => Promise<Picture>
 }
 
 export interface IPicturesRepositoryContract {
     getPictures: (paginationData: PictureRepositoryPayload) => Promise<Picture[]>
-    createPicture: (pictureData: CreatePictureSchema) => Promise<Picture>
+    createPicture: (pictureData: CreatePicture) => Promise<Picture>
 }

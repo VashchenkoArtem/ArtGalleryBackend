@@ -17,3 +17,4 @@ export interface PictureRepositoryPayload {
 }
 
 export type CreatePictureSchema = InferType<typeof PictureSchema.create>
+export type CreatePicture = CreatePictureSchema & { image: string }
