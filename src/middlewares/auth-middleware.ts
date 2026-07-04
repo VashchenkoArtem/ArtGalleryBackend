@@ -14,11 +14,11 @@ export function AuthMiddleware(req: Request, res: Response, next: NextFunction) 
     }
     try {
         const secret = ENV.JWT_ACCESS_SECRET
-        const decodedToken = verify(token, secret) as unknown as { id: number }
+        const decodedToken = verify(token, secret) as unknown as { userId: number }
         
-        res.locals.userId = decodedToken.id
+        res.locals.userId = decodedToken.userId
         next()
     }catch(error){
-        throw new AuthenticationError("Problem with user data. Please, try again")
+        throw new AuthenticationError("You are not in acount. Please, log in")
     }
 }

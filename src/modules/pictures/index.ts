@@ -1,0 +1,1 @@
+export { PicturesRouter } from "./pictures.router";

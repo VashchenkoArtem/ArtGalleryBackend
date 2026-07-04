@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import { AuthResponse, CreateUserSchema, LoginUserSchema } from "./auth.types";
+import { AuthResponse, CreateUserSchema, LoginUserSchema, UserStatus } from "./auth.types";
 import { RefreshToken, User } from "../../../generated/client";
 
 export interface IUserControllerContract {
@@ -50,6 +50,7 @@ export interface IUserServiceContract {
     loginUser: (userData: LoginUserSchema) => Promise<AuthResponse>
     refreshToken: (accessToken: string) => Promise<{ newRefreshToken: string, newAccessToken: string }>
     logoutUser: (refreshToken: string) => Promise<void>
+    isUserAdmin: (userId: number) => Promise<boolean>
 }   
 
 export interface IUserRepositoryContract {
@@ -58,4 +59,5 @@ export interface IUserRepositoryContract {
     getUserByEmail: (email: string) => Promise<User | null>
     getRefreshTokenByUserId: (userId: number) => Promise<RefreshToken | null>
     deleteRefreshToken: (userId: number) => Promise<void>
+    getUserStatusById: (userId: number) => Promise<UserStatus | null>
 }

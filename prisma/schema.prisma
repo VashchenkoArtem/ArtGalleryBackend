@@ -10,6 +10,7 @@ datasource db {
 
 model Picture {
   id           Int        @id @default(autoincrement())
+  title        String
   image        String
   collectionId Int
   comments     Comment[]
@@ -38,6 +39,7 @@ model User {
   email    String    @unique
   password String
   avatar   String?
+  isAdmin  Boolean   @default(false)
   comments Comment[]
   token    RefreshToken?
 }

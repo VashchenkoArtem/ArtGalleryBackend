@@ -70,5 +70,12 @@ export const UserService: IUserServiceContract = {
             throw new AuthenticationError("Invalid refresh token")
         }
         return await UserRepository.deleteRefreshToken(userId)
+    },
+    isUserAdmin: async (userId) => {
+        const userStatus = await UserRepository.getUserStatusById(userId)
+        if (!userStatus){
+            throw new AuthenticationError("User with this email does not exist")
+        }
+        return userStatus.isAdmin
     }
 }

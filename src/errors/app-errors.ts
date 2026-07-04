@@ -17,6 +17,11 @@ export class BadRequestError extends AppError {
 		super(message, 400);
 	}
 }
+export class PermissionError extends AppError {
+	constructor(message: string) {
+		super(`Permission denied: ${message}`, 403)
+	}
+}
 
 export class ConflictError extends AppError {
 	constructor(message: string = "Resource already exists") {

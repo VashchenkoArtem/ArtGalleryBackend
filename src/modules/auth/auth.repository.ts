@@ -69,5 +69,20 @@ export const UserRepository: IUserRepositoryContract = {
         } catch (error) {
             throw error
         }
+    },
+    getUserStatusById: async(userId) => {
+        try{
+            return await client.user.findUnique({
+                where: {
+                    id: userId
+                },
+                select: {
+                    id: true,
+                    isAdmin: true
+                }
+            })
+        } catch (error) {
+            throw error
+        }
     }
 }
