@@ -1,4 +1,4 @@
-import { PermissionError } from "../../errors";
+import { BadRequestError, PermissionError } from "../../errors";
 import { PicturesRepository } from "./pictures.repository";
 import { IPicturesServiceContract } from "./types/pictures.contracts";
 
@@ -20,6 +20,10 @@ export const PicturesService: IPicturesServiceContract = {
         return await PicturesRepository.createPicture(pictureData)
     },
     getPictureByIdWithComments: async (pictureId) => {
-        return await PicturesRepository.getPictureByIdWithComments(pictureId)
+        const pictureWithComments = await PicturesRepository.getPictureByIdWithComments(pictureId)
+        if (!pictureWithComments){
+            throw new BadRequestError("Picture with this id does not exist")
+        }
+        return pictureWithComments
     }
 }

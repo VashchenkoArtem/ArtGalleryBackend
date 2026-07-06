@@ -50,9 +50,6 @@ export const PicturesRepository: IPicturesRepositoryContract = {
                 }
             }
         })
-        if (!picture){
-            throw new BadRequestError("Picture with this id does not exist")
-        }
         return picture
     }
 }

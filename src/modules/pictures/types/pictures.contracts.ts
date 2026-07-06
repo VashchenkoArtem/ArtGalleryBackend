@@ -44,5 +44,5 @@ export interface IPicturesServiceContract {
 export interface IPicturesRepositoryContract {
     getPictures: (paginationData: PictureRepositoryPayload) => Promise<Picture[]>
     createPicture: (pictureData: CreatePicture) => Promise<Picture>
-    getPictureByIdWithComments: (pictureId: number) => Promise<PictureWithComments>
+    getPictureByIdWithComments: (pictureId: number) => Promise<PictureWithComments | null>
 }
