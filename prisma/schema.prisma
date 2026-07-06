@@ -10,11 +10,12 @@ datasource db {
 
 model Picture {
   id           Int        @id @default(autoincrement())
-  title        String
+  title        String     @db.VarChar(35)
   image        String
   collectionId Int
+  orientation  String     @db.VarChar(15)
   comments     Comment[]
-  collection   Collection @relation(fields: [collectionId], references: [id])
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
 }
 
 model Collection {
@@ -26,11 +27,11 @@ model Collection {
 
 model Comment {
   id        Int     @id @default(autoincrement())
-  content   String
+  content   String  @db.VarChar(256)
   pictureId Int
   userId    Int
-  picture   Picture @relation(fields: [pictureId], references: [id])
-  user      User    @relation(fields: [userId], references: [id])
+  picture   Picture @relation(fields: [pictureId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
@@ -48,6 +49,6 @@ model RefreshToken {
   id        Int      @id @default(autoincrement())
   token     String   @unique
   userId    Int      @unique
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 }

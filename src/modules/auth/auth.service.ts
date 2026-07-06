@@ -1,10 +1,10 @@
 import { compare, hash } from "bcryptjs";
-import { AuthenticationError } from "../../errors/app-errors";
 import { IUserServiceContract } from "./types/auth.contracts";
 import { UserRepository } from "./auth.repository";
 import { sign, verify } from "jsonwebtoken";
 import { ENV } from "../../config/env";
 import { randomUUID } from "crypto";
+import { AuthenticationError } from "../../errors";
 
 export const UserService: IUserServiceContract = {
     createUser: async (userData) => {

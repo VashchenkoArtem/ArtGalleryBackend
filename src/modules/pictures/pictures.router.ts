@@ -21,3 +21,9 @@ PicturesRouter.post(
     validateMiddleware(PictureSchema.create), 
     PicturesController.createPicture
 )
+
+PicturesRouter.get(
+    "/:pictureId",
+    AuthMiddleware,
+    PicturesController.getPictureByIdWithComments
+)

@@ -1,4 +1,6 @@
 import { client } from "../../client/client";
+import { ConflictError, NotFoundError, PrismaErrors } from "../../errors";
+import { Prisma } from "../../generated/client";
 import { IUserRepositoryContract } from "./types/auth.contracts";
 
 export const UserRepository: IUserRepositoryContract = {
@@ -8,6 +10,13 @@ export const UserRepository: IUserRepositoryContract = {
                 data: userData
             })
         } catch(error) {
+            if (
+                error instanceof Prisma.PrismaClientKnownRequestError
+            ) {
+                if (error.code === PrismaErrors.CONFLICT){
+                    throw new ConflictError("User already exists");
+                }
+            }
             throw error
         }
     },
@@ -33,6 +42,16 @@ export const UserRepository: IUserRepositoryContract = {
                 }
             })
         }catch(error){  
+            if (
+                error instanceof Prisma.PrismaClientKnownRequestError
+            ) {
+                if (error.code === PrismaErrors.CONFLICT){
+                    throw new ConflictError("Refresh token already exists");
+                }
+                if (error.code === PrismaErrors.NOT_FOUND){
+                    throw new NotFoundError("Refresh token does not found")
+                }
+            }
             throw error
         }
     },
@@ -67,6 +86,13 @@ export const UserRepository: IUserRepositoryContract = {
                 }
             })
         } catch (error) {
+            if (
+                error instanceof Prisma.PrismaClientKnownRequestError
+            ) {
+                if (error.code === PrismaErrors.NOT_FOUND){
+                    throw new NotFoundError("Refresh token does not found");
+                }
+            }
             throw error
         }
     },

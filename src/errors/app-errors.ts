@@ -44,4 +44,5 @@ export class AuthenticationError extends AppError {
 export enum PrismaErrors {
 	NOT_FOUND = "P2025",
 	CONFLICT = "P2002",
+	FOREIGN_KEY = "P2003"
 }

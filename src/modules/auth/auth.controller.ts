@@ -1,6 +1,6 @@
-import { AuthenticationError, BadRequestError } from "../../errors/app-errors";
 import { IUserControllerContract } from "./types/auth.contracts";
 import { UserService } from "./auth.service";
+import { AuthenticationError, BadRequestError } from "../../errors";
 
 export const UserController: IUserControllerContract = {
     registration: async (req, res, next) => {

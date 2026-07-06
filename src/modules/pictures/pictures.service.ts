@@ -1,5 +1,4 @@
-import { PermissionError } from "../../errors/app-errors";
-import { UserRepository } from "../auth/auth.repository";
+import { PermissionError } from "../../errors";
 import { PicturesRepository } from "./pictures.repository";
 import { IPicturesServiceContract } from "./types/pictures.contracts";
 
@@ -19,5 +18,8 @@ export const PicturesService: IPicturesServiceContract = {
             throw new PermissionError("User is not admin")
         }
         return await PicturesRepository.createPicture(pictureData)
+    },
+    getPictureByIdWithComments: async (pictureId) => {
+        return await PicturesRepository.getPictureByIdWithComments(pictureId)
     }
 }

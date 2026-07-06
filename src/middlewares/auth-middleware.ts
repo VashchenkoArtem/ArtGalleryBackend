@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
-import { AuthenticationError, BadRequestError } from "../errors/app-errors";
 import { ENV } from "../config/env";
 import { verify } from "jsonwebtoken";
+import { AuthenticationError, BadRequestError } from "../errors";
 
 export function AuthMiddleware(req: Request, res: Response, next: NextFunction) {
     const authorizationHeaders = req.headers.authorization;
