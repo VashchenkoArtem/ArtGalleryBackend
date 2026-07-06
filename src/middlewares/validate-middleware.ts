@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
-import { type AnyObjectSchema, ValidationError, ValidationError as YupValidationError } from "yup";
+import { type AnyObjectSchema, ValidationError as YupValidationError } from "yup";
+import { ValidationError } from "../errors";
 
 
 export function validateMiddleware(schema: AnyObjectSchema) {

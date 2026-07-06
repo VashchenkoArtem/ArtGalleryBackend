@@ -5,6 +5,7 @@ import { sign, verify } from "jsonwebtoken";
 import { ENV } from "../../config/env";
 import { randomUUID } from "crypto";
 import { AuthenticationError } from "../../errors";
+import { hashToken } from "../../utils/hash-token";
 
 export const UserService: IUserServiceContract = {
     createUser: async (userData) => {
@@ -19,9 +20,9 @@ export const UserService: IUserServiceContract = {
         }, )
 
         const accessToken = sign({ userId: newUser.id}, ENV.JWT_ACCESS_SECRET, { expiresIn: "15m"})
-        const refreshToken = sign({ userId: newUser.id,  tokenId: randomUUID()}, ENV.JWT_REFRESH_SECRET, { expiresIn: "7d"})
+        const refreshToken = sign({ userId: newUser.id, tokenId: randomUUID() }, ENV.JWT_REFRESH_SECRET, { expiresIn: "7d" })
 
-        await UserRepository.createOrUpdateRefreshToken(newUser.id, refreshToken)
+        await UserRepository.createOrUpdateRefreshToken(newUser.id, hashToken(refreshToken))
         return { 
             accessToken, 
             refreshToken 
@@ -40,7 +41,7 @@ export const UserService: IUserServiceContract = {
         const accessToken = sign({ userId: user.id}, ENV.JWT_ACCESS_SECRET, { expiresIn: "15m"})
         const refreshToken = sign({ userId: user.id, tokenId: randomUUID()}, ENV.JWT_REFRESH_SECRET, { expiresIn: "7d"})
 
-        await UserRepository.createOrUpdateRefreshToken(user.id, refreshToken)
+        await UserRepository.createOrUpdateRefreshToken(user.id, hashToken(refreshToken))
         return { 
             accessToken, 
             refreshToken: refreshToken
@@ -51,14 +52,14 @@ export const UserService: IUserServiceContract = {
         const userId = verifiedToken.userId
         const userToken = await UserRepository.getRefreshTokenByUserId(userId)
 
-        if (!userToken || userToken.token !== refreshToken){
+        if (!userToken || userToken.token !== hashToken(refreshToken)){
             throw new AuthenticationError("Invalid refresh token")
         }
 
         const newAccessToken = sign({ userId: userId}, ENV.JWT_ACCESS_SECRET, { expiresIn: "15m"})
         const newRefreshToken = sign({ userId: userId, tokenId: randomUUID()}, ENV.JWT_REFRESH_SECRET, { expiresIn: "7d"})
 
-        await UserRepository.createOrUpdateRefreshToken(userId, newRefreshToken)
+        await UserRepository.createOrUpdateRefreshToken(userId, hashToken(newRefreshToken))
 
         return { newAccessToken: newAccessToken, newRefreshToken: newRefreshToken }
     },
@@ -66,7 +67,7 @@ export const UserService: IUserServiceContract = {
         const verifiedToken = verify(refreshToken, ENV.JWT_REFRESH_SECRET) as { userId: number }
         const userId = verifiedToken.userId
         const userToken = await UserRepository.getRefreshTokenByUserId(userId)
-        if (!userToken || userToken.token !== refreshToken){
+        if (!userToken || userToken.token !== hashToken(refreshToken)){
             throw new AuthenticationError("Invalid refresh token")
         }
         return await UserRepository.deleteRefreshToken(userId)

@@ -8,7 +8,7 @@ export const PicturesService: IPicturesServiceContract = {
         const payload = {
             limit: limit,
             offset: page > 0 
-                ? (page - 1) * 15 
+                ? (page - 1) * limit
                 : 0
         }
         return await PicturesRepository.getPictures(payload)

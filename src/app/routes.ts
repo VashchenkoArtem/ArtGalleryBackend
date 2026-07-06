@@ -2,8 +2,8 @@ import { Router } from "express";
 import { UserRouter } from "../modules/auth";
 import { PicturesRouter } from "../modules/pictures";
 import { CollectionsRouter } from "../modules/collections";
-import { CommentRouter } from "../modules/comment/comment.router";
 import { ProfileRouter } from "../modules/profile";
+import { CommentRouter } from "../modules/comment";
 
 export const AppRouter = Router()
 
