@@ -16,6 +16,7 @@ model Picture {
   orientation  String     @db.VarChar(15)
   comments     Comment[]
   collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  @@index([collectionId])
 }
 
 model Collection {
@@ -32,6 +33,8 @@ model Comment {
   userId    Int
   picture   Picture @relation(fields: [pictureId], references: [id], onDelete: Cascade)
   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([pictureId])
+  @@index([userId])
 }
 
 model User {
