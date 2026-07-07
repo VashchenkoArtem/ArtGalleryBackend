@@ -1,5 +1,5 @@
 import { InferType } from "yup"
-import { CommentSchema } from "../comment.schema"
+import { CommentSchema } from "../comments.schema"
 
 export type CommentParams = {
     pictureId: string

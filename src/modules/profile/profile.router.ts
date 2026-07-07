@@ -14,7 +14,7 @@ ProfileRouter.get(
 )
 
 ProfileRouter.patch(
-    "/update",
+    "/",
     AuthMiddleware,
     uploadMiddleware.single("avatar"),
     procImgMiddleware(400, 85, "Avatars"),

@@ -1,6 +1,6 @@
 import { BadRequestError } from "../../errors";
-import { CommentService } from "./comment.service";
-import { ICommentControllerContract } from "./types/comment.contracts";
+import { CommentService } from "./comments.service";
+import { ICommentControllerContract } from "./types/comments.contracts";
 
 export const CommentController: ICommentControllerContract = {
     createComment: async (req, res, next) => {

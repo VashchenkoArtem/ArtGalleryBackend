@@ -3,7 +3,7 @@ import { UserRouter } from "../modules/auth";
 import { PicturesRouter } from "../modules/pictures";
 import { CollectionsRouter } from "../modules/collections";
 import { ProfileRouter } from "../modules/profile";
-import { CommentRouter } from "../modules/comment";
+import { CommentRouter } from "../modules/comments";
 
 export const AppRouter = Router()
 

@@ -1,7 +1,7 @@
 import { client } from "../../client/client";
 import { BadRequestError, ConflictError, PrismaErrors } from "../../errors";
 import { Prisma } from "../../generated/client";
-import { ICommentRepositoryContract } from "./types/comment.contracts";
+import { ICommentRepositoryContract } from "./types/comments.contracts";
 
 export const CommentRepository: ICommentRepositoryContract = {
     createComment: async (commentData) => {

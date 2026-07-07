@@ -1,1 +1,0 @@
-export { CommentRouter } from "./comment.router";

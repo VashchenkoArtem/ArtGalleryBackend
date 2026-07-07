@@ -1,5 +1,5 @@
-import { CommentRepository } from "./comment.repository";
-import { ICommentServiceContract } from "./types/comment.contracts";
+import { CommentRepository } from "./comments.repository";
+import { ICommentServiceContract } from "./types/comments.contracts";
 
 export const CommentService: ICommentServiceContract = {
     createComment: async (commentData) => {

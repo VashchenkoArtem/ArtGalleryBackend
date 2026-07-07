@@ -18,7 +18,7 @@ UserRouter.post(
 )
 
 UserRouter.post(
-    "/refresh", 
+    "/token", 
     UserController.refreshToken
 )
 

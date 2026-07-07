@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express"
-import { CommentParams, CreateComment, CreateCommentSchema } from "./comment.types"
+import { CommentParams, CreateComment, CreateCommentSchema } from "./comments.types"
 import { Comment } from "../../../generated/client"
 
 export interface ICommentControllerContract {
