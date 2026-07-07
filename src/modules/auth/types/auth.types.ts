@@ -13,3 +13,9 @@ export interface UserStatus {
     id: number;
     isAdmin: boolean
 }
+
+export type CreateUserWithGoogleId = Omit<CreateUserSchema, "password"> & { googleId: string, avatar?: string }
+
+export type GoogleAuthenticationPayload = {
+    idToken: string
+}

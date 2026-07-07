@@ -14,7 +14,8 @@ export const ProfileRepository: IProfileRepositoryContract = {
                 name: true,
                 email: true,
                 avatar: true,
-                isAdmin: true
+                isAdmin: true,
+                googleId: true
             }
         })
     },
@@ -36,7 +37,8 @@ export const ProfileRepository: IProfileRepositoryContract = {
                     name: true,
                     email: true,
                     avatar: true,
-                    isAdmin: true
+                    isAdmin: true,
+                    googleId: true
                 }
             })
         } catch (error) {

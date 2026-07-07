@@ -19,6 +19,6 @@ export function AuthMiddleware(req: Request, res: Response, next: NextFunction) 
         res.locals.userId = decodedToken.userId
         next()
     }catch(error){
-        throw new AuthenticationError("You are not in acount. Please, log in")
+        throw new AuthenticationError("You are not in account. Please, log in")
     }
 }

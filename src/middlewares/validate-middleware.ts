@@ -14,7 +14,6 @@ export function validateMiddleware(schema: AnyObjectSchema) {
             next();
         }
         catch (error) {
-            console.log(error)
             if (error instanceof YupValidationError) {
                 next(new ValidationError(error.message));
                 return;

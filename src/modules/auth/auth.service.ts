@@ -4,8 +4,11 @@ import { UserRepository } from "./auth.repository";
 import { sign, verify } from "jsonwebtoken";
 import { ENV } from "../../config/env";
 import { randomUUID } from "crypto";
-import { AuthenticationError } from "../../errors";
+import { AuthenticationError, BadRequestError } from "../../errors";
 import { hashToken } from "../../utils/hash-token";
+import { OAuth2Client } from "google-auth-library";
+
+const googleClient = new OAuth2Client(ENV.GOOGLE_CLIENT_ID);
 
 export const UserService: IUserServiceContract = {
     createUser: async (userData) => {
@@ -33,11 +36,13 @@ export const UserService: IUserServiceContract = {
         if (!user){
             throw new AuthenticationError("User with this email does not exist")
         }
+        if (!user.password) {
+            throw new AuthenticationError("This account uses Google sign-in, please log in with Google")
+        }
         const isPasswordValid = await compare(userData.password, user.password);
         if (!isPasswordValid) {
             throw new AuthenticationError("Invalid password");
         }
-
         const accessToken = sign({ userId: user.id}, ENV.JWT_ACCESS_SECRET, { expiresIn: "15m"})
         const refreshToken = sign({ userId: user.id, tokenId: randomUUID()}, ENV.JWT_REFRESH_SECRET, { expiresIn: "7d"})
 
@@ -78,5 +83,31 @@ export const UserService: IUserServiceContract = {
             throw new AuthenticationError("User with this email does not exist")
         }
         return userStatus.isAdmin
+    },
+    loginWithGoogle: async (idToken) => {
+        const ticket = await googleClient.verifyIdToken({
+            idToken,
+            audience: ENV.GOOGLE_CLIENT_ID
+        })
+        const payload = ticket.getPayload()
+        if (!payload || !payload.email){
+            throw new AuthenticationError("Invalid Google token")
+        }
+        let user = await UserRepository.getUserByEmail(payload.email)
+        if (!user) {
+            user = await UserRepository.createUser({
+                name: payload.name ?? "Google User",
+                email: payload.email,
+                password: undefined,
+                googleId: payload.sub,
+                avatar: payload.picture
+            })
+        }
+
+    const accessToken = sign({ userId: user.id }, ENV.JWT_ACCESS_SECRET, { expiresIn: "15m" })
+    const refreshToken = sign({ userId: user.id, tokenId: randomUUID() }, ENV.JWT_REFRESH_SECRET, { expiresIn: "7d" })
+    await UserRepository.createOrUpdateRefreshToken(user.id, hashToken(refreshToken))
+
+    return { accessToken, refreshToken }
     }
 }

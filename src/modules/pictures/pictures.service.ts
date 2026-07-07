@@ -13,10 +13,7 @@ export const PicturesService: IPicturesServiceContract = {
         }
         return await PicturesRepository.getPictures(payload)
     },
-    createPicture: async (pictureData, isUserAdmin) => {
-        if (!isUserAdmin){
-            throw new PermissionError("User is not admin")
-        }
+    createPicture: async (pictureData) => {
         return await PicturesRepository.createPicture(pictureData)
     },
     getPictureByIdWithComments: async (pictureId) => {

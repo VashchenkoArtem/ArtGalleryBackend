@@ -7,5 +7,8 @@ export const ENV = cleanEnv(process.env, {
     JWT_REFRESH_SECRET: str(),
     CLOUDINARY_NAME: str(),
     CLOUDINARY_API_KEY: str(),
-    CLOUDINARY_API_SECRET_KEY: str()
+    CLOUDINARY_API_SECRET_KEY: str(),
+    PORT: port(),
+    HOST: host(),
+    GOOGLE_CLIENT_ID: str()
 })

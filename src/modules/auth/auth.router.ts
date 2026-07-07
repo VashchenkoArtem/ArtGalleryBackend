@@ -26,3 +26,9 @@ UserRouter.post(
     "/logout", 
     UserController.logout
 )
+
+UserRouter.post(
+    "/google",
+    validateMiddleware(UserSchema.google),
+    UserController.loginWithGoogle
+)

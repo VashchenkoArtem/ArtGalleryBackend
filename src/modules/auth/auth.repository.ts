@@ -63,7 +63,6 @@ export const UserRepository: IUserRepositoryContract = {
                 }
             })
         }catch(error){
-            console.log(error)
             throw error
         }
     },
@@ -110,5 +109,18 @@ export const UserRepository: IUserRepositoryContract = {
         } catch (error) {
             throw error
         }
+    },
+    getUserByGoogleId: async(googleId) => {
+        return await client.user.findUnique({ 
+            where: { googleId },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                avatar: true,
+                isAdmin: true,
+                googleId: true
+            }
+        })
     }
 }

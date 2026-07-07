@@ -25,13 +25,11 @@ export const PicturesController: IPicturesControllerContact = {
             if (!pictureData || !pictureImage){
                 throw new BadRequestError("Picture data is missing")
             }
-            const userId = res.locals.userId
-            const isUserAdmin = await UserService.isUserAdmin(userId)
             const pictureDataWithImage = {
                 ...pictureData,
                 image: pictureImage.filename
             }
-            const createdPicture = await PicturesService.createPicture(pictureDataWithImage, isUserAdmin)
+            const createdPicture = await PicturesService.createPicture(pictureDataWithImage)
             res.status(201).json(createdPicture)
         } catch (error) {
             next(error)

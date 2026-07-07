@@ -37,7 +37,7 @@ export interface IPicturesControllerContact {
 
 export interface IPicturesServiceContract {
     getPictures: (paginationData: PaginationData) => Promise<Picture[]>
-    createPicture: (pictureData: CreatePicture, isUserAdmin: boolean) => Promise<Picture>
+    createPicture: (pictureData: CreatePicture) => Promise<Picture>
     getPictureByIdWithComments: (pictureId: number) => Promise<PictureWithComments>
 }
 
