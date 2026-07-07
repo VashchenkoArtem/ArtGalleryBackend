@@ -1,5 +1,5 @@
 import { client } from "../../client/client";
-import { ConflictError, NotFoundError, PrismaErrors } from "../../errors";
+import { BadRequestError, ConflictError, NotFoundError, PrismaErrors } from "../../errors";
 import { Prisma } from "../../generated/client";
 import { IUserRepositoryContract } from "./types/auth.contracts";
 
@@ -122,5 +122,27 @@ export const UserRepository: IUserRepositoryContract = {
                 googleId: true
             }
         })
+    },
+    linkGoogleAccount: async(userId, googleId) => {
+        try {
+            return await client.user.update({
+                where: {
+                    id: userId
+                },
+                data: {
+                    googleId: googleId
+                }
+            })
+        } catch (error) {
+            if (
+                error instanceof Prisma.PrismaClientKnownRequestError
+            ) {
+                if (error.code === PrismaErrors.NOT_FOUND){
+                    throw new BadRequestError("User does not exist")
+                }
+            }
+
+            throw error;
+        }
     }
 }

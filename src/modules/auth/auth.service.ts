@@ -90,8 +90,8 @@ export const UserService: IUserServiceContract = {
             audience: ENV.GOOGLE_CLIENT_ID
         })
         const payload = ticket.getPayload()
-        if (!payload || !payload.email){
-            throw new AuthenticationError("Invalid Google token")
+        if (!payload || !payload.email || !payload.email_verified){
+            throw new AuthenticationError("Invalid or unverified Google account")
         }
         let user = await UserRepository.getUserByEmail(payload.email)
         if (!user) {
@@ -103,11 +103,14 @@ export const UserService: IUserServiceContract = {
                 avatar: payload.picture
             })
         }
+        if (user && !user.googleId) {
+            user = await UserRepository.linkGoogleAccount(user.id, payload.sub)
+        }
 
-    const accessToken = sign({ userId: user.id }, ENV.JWT_ACCESS_SECRET, { expiresIn: "15m" })
-    const refreshToken = sign({ userId: user.id, tokenId: randomUUID() }, ENV.JWT_REFRESH_SECRET, { expiresIn: "7d" })
-    await UserRepository.createOrUpdateRefreshToken(user.id, hashToken(refreshToken))
+        const accessToken = sign({ userId: user.id }, ENV.JWT_ACCESS_SECRET, { expiresIn: "15m" })
+        const refreshToken = sign({ userId: user.id, tokenId: randomUUID() }, ENV.JWT_REFRESH_SECRET, { expiresIn: "7d" })
+        await UserRepository.createOrUpdateRefreshToken(user.id, hashToken(refreshToken))
 
-    return { accessToken, refreshToken }
+        return { accessToken, refreshToken }
     }
 }

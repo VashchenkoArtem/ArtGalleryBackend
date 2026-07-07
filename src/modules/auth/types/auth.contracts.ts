@@ -71,4 +71,5 @@ export interface IUserRepositoryContract {
     deleteRefreshToken: (userId: number) => Promise<void>
     getUserStatusById: (userId: number) => Promise<UserStatus | null>
     getUserByGoogleId: (googleId: string) => Promise<UserWithoutPassword | null>
+    linkGoogleAccount: (userId: number, googleId: string) => Promise<User>
 }
