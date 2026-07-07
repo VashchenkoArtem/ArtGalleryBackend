@@ -4,9 +4,17 @@ import type { NextFunction, Request, Response } from "express";
 import cloudinary from "../config/cloudinary";
 import streamifier from "streamifier";
 import { UploadApiResponse } from "cloudinary";
+import { BadRequestError } from "../errors";
 
 export const uploadMiddleware = multer({
     storage: memoryStorage(),
+    limits: { fileSize: 5 * 1024 * 1024 }, 
+    fileFilter: (req, file, cb) => {
+        if (!file.mimetype.startsWith("image/")) {
+            return cb(new BadRequestError("Only image files are allowed") as any);
+        }
+        cb(null, true);
+    }
 });
 
 function uploadBuffer(
