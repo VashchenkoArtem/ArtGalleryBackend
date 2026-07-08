@@ -4,12 +4,14 @@ import { AppRouter } from "./routes";
 import { errorMiddleware } from "../middlewares";
 import cookieParser from "cookie-parser";
 import { ENV } from "../config/env";
-
+import cors from "cors"
 
 const app: Express = express();
 
 
-
+app.use(cors({
+    origin: "*"
+}))
 app.use(express.json());
 app.use(cookieParser());
 
