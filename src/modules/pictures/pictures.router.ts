@@ -10,7 +10,6 @@ export const PicturesRouter = Router()
 
 PicturesRouter.get(
     "/", 
-    AuthMiddleware, 
     PicturesController.getPictures
 )
 

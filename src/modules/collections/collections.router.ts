@@ -6,6 +6,5 @@ export const CollectionsRouter = Router()
 
 CollectionsRouter.get(
     "/", 
-    AuthMiddleware,
     CollectionsController.getCollections
 )
