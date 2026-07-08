@@ -16,6 +16,6 @@ app.use(cookieParser());
 app.use(AppRouter);
 app.use(errorMiddleware);
 
-app.listen(ENV.PORT, ENV.HOST, () => {
+app.listen(ENV.PORT, "0.0.0.0", () => {
     console.log("Server is running on http://" + ENV.HOST + ":" + ENV.PORT)
 });
