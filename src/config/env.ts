@@ -10,5 +10,6 @@ export const ENV = cleanEnv(process.env, {
     CLOUDINARY_API_SECRET_KEY: str(),
     PORT: port(),
     HOST: host(),
-    GOOGLE_CLIENT_ID: str()
+    GOOGLE_CLIENT_ID: str(),
+    FRONTEND_URL: str()
 })

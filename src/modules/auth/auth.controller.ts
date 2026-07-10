@@ -14,7 +14,7 @@ export const UserController: IUserControllerContract = {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
                 secure: true,
-                sameSite: "strict"
+                sameSite: "none" 
             })
             res.status(201).json({ accessToken })
         } catch (error) {
@@ -32,7 +32,7 @@ export const UserController: IUserControllerContract = {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
                 secure: true,
-                sameSite: "strict"
+                sameSite: "none" 
             })
             res.status(200).json({ accessToken })
         } catch (error) {
@@ -50,7 +50,7 @@ export const UserController: IUserControllerContract = {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
                 secure: true,
-                sameSite: "strict"
+                sameSite: "none" 
             })
             res.status(200).json({ accessToken: newAccessToken })
         } catch (error) {
@@ -69,7 +69,7 @@ export const UserController: IUserControllerContract = {
             res.clearCookie("refreshToken", {
                 httpOnly: true,
                 secure: true,
-                sameSite: "strict"
+                sameSite: "none" 
             })
             res.status(200).json("Logout successful")
         } catch (error) {
@@ -86,7 +86,7 @@ export const UserController: IUserControllerContract = {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
                 secure: true,
-                sameSite: "strict"
+                sameSite: "none" 
             })
             res.status(200).json({ accessToken })
         } catch (error) {
