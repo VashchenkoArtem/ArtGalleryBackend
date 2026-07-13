@@ -1,5 +1,6 @@
 import { cleanEnv, host, port, str } from "envalid";
 import "dotenv/config";
+import { bool, boolean } from "yup";
 
 export const ENV = cleanEnv(process.env, {
     DATABASE_URL: str(),

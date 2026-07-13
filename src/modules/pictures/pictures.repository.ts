@@ -51,5 +51,8 @@ export const PicturesRepository: IPicturesRepositoryContract = {
             }
         })
         return picture
+    },
+    countPictures: async () => {
+        return await client.picture.count()
     }
 }

@@ -1,12 +1,11 @@
 import { BadRequestError } from "../../errors";
-import { UserService } from "../auth/auth.service";
 import { PicturesService } from "./pictures.service";
 import { IPicturesControllerContact } from "./types/pictures.contracts";
 
 export const PicturesController: IPicturesControllerContact = {
     getPictures: async (req, res, next) => {
         try {
-            const limit = req.query.limit ?? 15
+            const limit = req.query.limit ?? 20
             const page = req.query.page ?? 1
             const pictures = await PicturesService.getPictures({
                 limit: Number(limit), 

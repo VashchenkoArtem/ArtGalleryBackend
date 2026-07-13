@@ -2,6 +2,13 @@ import { IUserControllerContract } from "./types/auth.contracts";
 import { UserService } from "./auth.service";
 import { AuthenticationError, BadRequestError } from "../../errors";
 
+const isProduction = false
+const REFRESH_COOKIE_OPTIONS = {
+    httpOnly: true,
+    secure: false,
+    sameSite: (isProduction ? "none" : "lax") as "none" | "lax",
+}
+
 export const UserController: IUserControllerContract = {
     registration: async (req, res, next) => {
         try {
@@ -11,10 +18,8 @@ export const UserController: IUserControllerContract = {
             }
             const { accessToken, refreshToken } = await UserService.createUser(userData)
             res.cookie("refreshToken", refreshToken, {
+                ...REFRESH_COOKIE_OPTIONS,
                 maxAge: 30 * 24 * 60 * 60 * 1000,
-                httpOnly: true,
-                secure: true,
-                sameSite: "none" 
             })
             res.status(201).json({ accessToken })
         } catch (error) {
@@ -29,10 +34,8 @@ export const UserController: IUserControllerContract = {
             }
             const { accessToken, refreshToken } = await UserService.loginUser(userData)
             res.cookie("refreshToken", refreshToken, {
+                ...REFRESH_COOKIE_OPTIONS,
                 maxAge: 30 * 24 * 60 * 60 * 1000,
-                httpOnly: true,
-                secure: true,
-                sameSite: "none" 
             })
             res.status(200).json({ accessToken })
         } catch (error) {
@@ -47,10 +50,8 @@ export const UserController: IUserControllerContract = {
             }
             const { newRefreshToken, newAccessToken } = await UserService.refreshToken(refreshToken)
             res.cookie("refreshToken", newRefreshToken, {
+                ...REFRESH_COOKIE_OPTIONS,
                 maxAge: 30 * 24 * 60 * 60 * 1000,
-                httpOnly: true,
-                secure: true,
-                sameSite: "none" 
             })
             res.status(200).json({ accessToken: newAccessToken })
         } catch (error) {
@@ -66,11 +67,7 @@ export const UserController: IUserControllerContract = {
                 throw new BadRequestError("Refresh token is missing");
             }
             await UserService.logoutUser(refreshToken)
-            res.clearCookie("refreshToken", {
-                httpOnly: true,
-                secure: true,
-                sameSite: "none" 
-            })
+            res.clearCookie("refreshToken", REFRESH_COOKIE_OPTIONS)
             res.status(200).json("Logout successful")
         } catch (error) {
             throw new AuthenticationError(
@@ -83,10 +80,8 @@ export const UserController: IUserControllerContract = {
             const { idToken } = req.body;
             const { accessToken, refreshToken } = await UserService.loginWithGoogle(idToken)
             res.cookie("refreshToken", refreshToken, {
+                ...REFRESH_COOKIE_OPTIONS,
                 maxAge: 30 * 24 * 60 * 60 * 1000,
-                httpOnly: true,
-                secure: true,
-                sameSite: "none" 
             })
             res.status(200).json({ accessToken })
         } catch (error) {

@@ -23,7 +23,13 @@ export type CreatePicture = CreatePictureSchema & { image: string }
 export type PictureParams = {
     pictureId: string
 }
-
+export type PicturesResponse = {
+    pictures: Picture[];
+    page: number;
+    limit: number;
+    picturesCount: number;
+    totalPages: number
+}
 export type PictureWithComments = Prisma.PictureGetPayload<{
     include: {
         comments: {

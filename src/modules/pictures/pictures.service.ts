@@ -11,7 +11,15 @@ export const PicturesService: IPicturesServiceContract = {
                 ? (page - 1) * limit
                 : 0
         }
-        return await PicturesRepository.getPictures(payload)
+        const pictures = await PicturesRepository.getPictures(payload)
+        const picturesCount = await PicturesRepository.countPictures()
+        return {
+            pictures,
+            page,
+            limit,
+            picturesCount,
+            totalPages: Math.ceil(picturesCount / limit),
+        };
     },
     createPicture: async (pictureData) => {
         return await PicturesRepository.createPicture(pictureData)
