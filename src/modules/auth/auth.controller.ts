@@ -5,8 +5,8 @@ import { AuthenticationError, BadRequestError } from "../../errors";
 const isProduction = true
 const REFRESH_COOKIE_OPTIONS = {
     httpOnly: true,
-    secure: false,
-    sameSite: (isProduction ? "none" : "lax") as "none" | "lax",
+    secure: true,
+    ssameSite: "none" as const,
 }
 
 export const UserController: IUserControllerContract = {
