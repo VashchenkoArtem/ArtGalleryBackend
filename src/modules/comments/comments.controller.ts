@@ -21,6 +21,7 @@ export const CommentController: ICommentControllerContract = {
             const comment = await CommentService.createComment(commentDataWithIds)
             res.status(201).json(comment)
         } catch (error) { 
+            console.log(error)
             next(error)
         }
     }

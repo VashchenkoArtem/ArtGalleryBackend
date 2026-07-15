@@ -19,8 +19,9 @@ export const PicturesController: IPicturesControllerContact = {
     createPicture: async (req, res, next) => {
         try {
             const pictureData = req.body
+            console.log(pictureData)
             const pictureImage = req.file as Express.Multer.File
-            
+            console.log(pictureImage)
             if (!pictureData || !pictureImage){
                 throw new BadRequestError("Picture data is missing")
             }
@@ -32,6 +33,7 @@ export const PicturesController: IPicturesControllerContact = {
             res.status(201).json(createdPicture)
         } catch (error) {
             next(error)
+            console.log(error)
         }
     },
     getPictureByIdWithComments: async (req, res, next) => {

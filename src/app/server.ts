@@ -13,7 +13,7 @@ app.use(
     cors({
         origin: [
             "http://localhost:5173",
-            "http://192.168.0.104:5173",
+            "https://art-gallery-frontend-five.vercel.app/"
         ],
         credentials: true,
     })
@@ -24,6 +24,6 @@ app.use(cookieParser());
 app.use(AppRouter);
 app.use(errorMiddleware);
 
-app.listen(ENV.PORT, "0.0.0.0", () => {
+app.listen(ENV.PORT, "192.168.0.104", () => {
     console.log("Server is running on http://" + ENV.HOST + ":" + ENV.PORT)
 });
