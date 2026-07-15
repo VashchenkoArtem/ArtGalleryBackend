@@ -2,7 +2,7 @@ import { IUserControllerContract } from "./types/auth.contracts";
 import { UserService } from "./auth.service";
 import { AuthenticationError, BadRequestError } from "../../errors";
 
-const isProduction = false
+const isProduction = true
 const REFRESH_COOKIE_OPTIONS = {
     httpOnly: true,
     secure: false,
