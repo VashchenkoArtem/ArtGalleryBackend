@@ -12,6 +12,7 @@ const app: Express = express();
 app.use(
     cors({
         origin: [
+            "http://localhost:5173/",
             "https://art-gallery-frontend-five.vercel.app",
             "https://art-gallery-frontend-6udx3ew4q-vashchenkoartems-projects.vercel.app"
         ],
