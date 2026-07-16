@@ -6,7 +6,7 @@ const isProduction = true
 const REFRESH_COOKIE_OPTIONS = {
     httpOnly: true,
     secure: true,
-    ssameSite: "none" as const,
+    sameSite: "none" as const,
 }
 
 export const UserController: IUserControllerContract = {
